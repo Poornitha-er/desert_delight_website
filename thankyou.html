@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You - Dessert Delight</title>
+  <style>
+    body {
+      background: #fff3e0;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 15px 20px;
+      background-color: #f8b195;
+    }
+
+    .top-bar a {
+      text-decoration: none;
+      background-color: white;
+      color: #d26466;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .top-bar a:hover {
+      background-color: #ffe0d6;
+    }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .thank-you-box {
+      background: white;
+      max-width: 500px;
+      width: 90%;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .tick-img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      color: #d26466;
+      margin-top: 0;
+    }
+
+    .summary {
+      margin-top: 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #444;
+      text-align: left;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #d26466;
+    }
+
+    .shop-info {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar with Home button -->
+  <div class="top-bar">
+    <a href="index.html">Go to Home</a>
+  </div>
+
+  <!-- Centered Thank You Box -->
+  <div class="main-container">
+    <div class="thank-you-box">
+      <img class="tick-img" src="https://st3.depositphotos.com/4429641/37615/v/450/depositphotos_376152850-stock-illustration-check-mark-icons-flat-buttons.jpg" alt="Tick">
+      <h2>Thank You for Your Order!</h2>
+
+      <div class="summary">
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Phone:</strong> <span id="phone"></span></p>
+        <p><strong>Area:</strong> <span id="area"></span></p>
+        <p><strong>Pin Code:</strong> <span id="pincode"></span></p>
+        <p><strong>Address:</strong> <span id="address"></span></p>
+        <p><strong>Payment Method:</strong> <span id="paymentMethod"></span></p>
+        <p><strong>Total Items:</strong> <span id="totalItems"></span></p>
+        <p><strong>Total Bill:</strong> Rs. <span id="totalAmount"></span></p>
+      </div>
+
+      <div class="note">Your order will be delivered within 1 hour.</div>
+
+      <div class="shop-info">
+        <p><strong>Dessert Delight</strong></p>
+        <p>Near Salem Old Bus Stand, First Street - 636001</p>
+        <p>Phone: 7904987440</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('name').textContent = sessionStorage.getItem("customerName") || "-";
+    document.getElementById('phone').textContent = sessionStorage.getItem("phone") || "-";
+    document.getElementById('area').textContent = sessionStorage.getItem("area") || "-";
+    document.getElementById('pincode').textContent = sessionStorage.getItem("pincode") || "-";
+    document.getElementById('address').textContent = sessionStorage.getItem("address") || "-";
+    document.getElementById('paymentMethod').textContent = sessionStorage.getItem("paymentMethod") || "-";
+    document.getElementById('totalItems').textContent = sessionStorage.getItem("totalItems") || "0";
+    document.getElementById('totalAmount').textContent = sessionStorage.getItem("totalAmount") || "0";
+  </script>
+</body>
+</html>
