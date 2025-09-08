@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart - Dessert Delight</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #fff3e0;
+    }
+    h2 {
+      color: #d26466;
+    }
+    .cart-item {
+      background: #fff;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .qty-btn, .remove-btn {
+      background-color: #e57373;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .qty-btn:hover, .remove-btn:hover {
+      background-color: #c62828;
+    }
+    .quantity {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .total {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    .checkout-btn {
+      margin-top: 20px;
+      background-color: #f67280;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .checkout-btn:hover {
+      background-color: #c06c84;
+    }
+  </style>
+</head>
+<body>
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <div class="total" id="totalAmount"></div>
+  <button class="checkout-btn" onclick="goToCustomer()">Checkout</button>
+
+  <script>
+    let items = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const cartDiv = document.getElementById("cartItems");
+    const totalAmount = document.getElementById("totalAmount");
+
+    function renderCart() {
+      cartDiv.innerHTML = "";
+      let total = 0;
+
+      items.forEach((item, index) => {
+        const itemTotal = item.amount * item.quantity;
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <span>${index + 1}. ${item.item} - Rs. ${item.amount} x ${item.quantity} = Rs. ${itemTotal}</span>
+          <div class="buttons">
+            <button class="qty-btn" onclick="decreaseQty(${index})">-</button>
+            <span class="quantity">${item.quantity}</span>
+            <button class="qty-btn" onclick="increaseQty(${index})">+</button>
+            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+        cartDiv.appendChild(div);
+        total += itemTotal;
+      });
+
+      totalAmount.innerText = "Total: Rs. " + total;
+    }
+
+    function increaseQty(index) {
+      items[index].quantity += 1;
+      localStorage.setItem("cartItems", JSON.stringify(items));
+      renderCart();
+    }
+
+    function decreaseQty(index) {
+      if (items[index].quantity > 1) {
+        items[index].quantity -= 1;
+      } else {
+        items.splice(index, 1);
+      }
+      localStorage.setItem("cartItems", JSON.stringify(items));
+      renderCart();
+    }
+
+    function removeItem(index) {
+      items.splice(index, 1);
+      localStorage.setItem("cartItems", JSON.stringify(items));
+      renderCart();
+    }
+
+    function goToCustomer() {
+      if (items.length > 0) {
+        window.location.href = "customer.html";
+      } else {
+        alert("Your cart is empty!");
+      }
+    }
+
+    items.forEach(item => {
+      if (!item.quantity) item.quantity = 1;
+    });
+
+    localStorage.setItem("cartItems", JSON.stringify(items));
+    renderCart();
+  </script>
+</body>
+</html>
