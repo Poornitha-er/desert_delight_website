@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dessert Delight - Login</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff3e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      width: 300px;
+      text-align: center;
+    }
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #d26466;
+    }
+    .login-container input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    .login-container .error {
+      color: red;
+      font-size: 13px;
+      height: 18px;
+    }
+    .login-container button {
+      background-color: #f67280;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+    }
+    .login-container button:hover {
+      background-color: #c06c84;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to Dessert Delight</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Email" required>
+      <div class="error" id="userError"></div>
+      <input type="password" id="password" placeholder="Password" required>
+      <div class="error" id="passError"></div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    const passRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      let valid = true;
+
+      if (!emailRegex.test(user)) {
+        document.getElementById('userError').textContent = 'Enter valid email.';
+        valid = false;
+      } else {
+        document.getElementById('userError').textContent = '';
+      }
+
+      if (!passRegex.test(pass)) {
+        document.getElementById('passError').textContent = 'Min 6 chars, include letters & numbers.';
+        valid = false;
+      } else {
+        document.getElementById('passError').textContent = '';
+      }
+
+      if (valid) {
+        localStorage.setItem('isLoggedIn', 'true');
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>
