@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer Details</title>
+  <style>
+    body {
+      background-color: #fdebd0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    h2 {
+      margin-left: 30px;
+      color: #c94c4c;
+    }
+
+    .form-container {
+      background-color: #f8b5c1; 
+      width: 300px;
+      padding: 20px;
+      margin-left: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px #ccc;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .order-btn {
+      background-color: #f27b7b;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    .order-btn:hover {
+      background-color: #e75d5d;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: -5px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Enter Your Details</h2>
+  <div class="form-container">
+    <form onsubmit="return validateForm()">
+      <input type="text" id="name" placeholder="Your Name" required><br />
+
+      <input type="text" id="phone" placeholder="Phone Number" required><br />
+      <p class="error" id="phoneError"></p>
+
+      <input type="text" id="pincode" placeholder="Pincode" oninput="checkPincode()" required><br />
+      <p class="error" id="pincodeError"></p>
+
+      <select id="addressDropdown" class="hidden" required>
+        <option value="">Select City</option>
+        <option value="Salem Collectorate">Salem Collectorate</option>
+        <option value="Salem East">Salem East</option>
+        <option value="Salem Second Agraharam">Salem Second Agraharam</option>
+        <option value="Thillainagar">Thillainagar</option>
+        <option value="Ponnammapet">Ponnammapet</option>
+        <option value="Salem Bazaar">Salem Bazaar</option>
+      </select><br />
+
+      <!-- New: Street Address and door no. -->
+      <input type="text" id="street" placeholder="Street Address and door no." class="hidden" required><br />
+
+ 
+      <!-- New: Payment Options -->
+      <div id="paymentMethods" class="hidden">
+<label>Payment Method:</label><br/>
+        <label><input type="radio" name="payment" value="COD" required> Cash on Delivery</label><br />
+        <label><input type="radio" name="payment" value="Bank"> UPI</label><br />
+        <label><input type="radio" name="payment" value="Online"> CARD</label><br />
+      </div>
+
+      <button class="order-btn" type="submit">Place Order</button>
+    </form>
+  </div>
+
+  <script>
+    function checkPincode() {
+      const pincode = document.getElementById("pincode").value.trim();
+      const dropdown = document.getElementById("addressDropdown");
+      const error = document.getElementById("pincodeError");
+      const street = document.getElementById("street");
+      const payment = document.getElementById("paymentMethods");
+
+      if (pincode === "636001") {
+        dropdown.classList.remove("hidden");
+        street.classList.remove("hidden");
+        payment.classList.remove("hidden");
+        error.textContent = "";
+      } else {
+        dropdown.classList.add("hidden");
+        street.classList.add("hidden");
+        payment.classList.add("hidden");
+        error.textContent = "Delivery not available for this place.";
+      }
+    }
+
+    function validateForm() {
+      const phone = document.getElementById("phone").value.trim();
+      const phoneError = document.getElementById("phoneError");
+
+      if (!/^\d{10}$/.test(phone)) {
+        phoneError.textContent = "Invalid phone number. Must be 10 digits.";
+        return false;
+      } else {
+        phoneError.textContent = "";
+      }
+
+      const pincode = document.getElementById("pincode").value.trim();
+      if (pincode !== "636001") {
+        document.getElementById("pincodeError").textContent = "Delivery not available for this place.";
+        return false;
+      }
+
+      const city = document.getElementById("addressDropdown").value;
+      if (!city) {
+        alert("Please select your city from the dropdown.");
+        return false;
+      }
+
+      const street = document.getElementById("street").value.trim();
+      if (!street) {
+        alert("Please enter your street address.");
+        return false;
+      }
+
+      const paymentSelected = document.querySelector('input[name="payment"]:checked');
+      if (!paymentSelected) {
+        alert("Please select a payment method.");
+        return false;
+      }
+sessionStorage.setItem("customerName", document.getElementById("name").value.trim());
+      sessionStorage.setItem("phone", phone);
+      sessionStorage.setItem("pincode", pincode);
+      sessionStorage.setItem("area", city);
+      sessionStorage.setItem("address", street);
+      sessionStorage.setItem("paymentMethod", paymentSelected.value);
+
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+      const totalAmount = cartItems.reduce((sum, item) => sum + item.amount * item.quantity, 0);
+
+      sessionStorage.setItem("totalItems", totalItems);
+      sessionStorage.setItem("totalAmount", totalAmount);
+      sessionStorage.setItem("orderedItems", JSON.stringify(cartItems));
+
+      setTimeout(() => {
+        alert("Your order has been placed successfully!");
+        window.location.href = "thankyou.html";
+      }, 200);
+
+      return false; 
+    }
+  </script>
+</body>
+</html>
